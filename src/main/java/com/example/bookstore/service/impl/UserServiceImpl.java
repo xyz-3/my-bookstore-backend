@@ -17,26 +17,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserName(String username) {
-        return userDao.findUserByUsername(username).orElseThrow();
+        return userDao.findUserByUsername(username).get();
     }
 
     @Override
-    public String handleRegister(RegisterForm registerForm) {
-        if (userDao.findUserByUsername(registerForm.getUsername()).isPresent())
-            return "account already exists";
-        if (userDao.findUserByEmail(registerForm.getEmail()).isPresent())
-            return "email address already exists";
-        userDao.addUser(registerForm);
-        return "OK";
+    public User handleRegister(RegisterForm registerForm) {
+        return userDao.addUser(registerForm);
     }
 
     @Override
-    public String handleLogin(RegisterForm registerForm) {
-        if (userDao.findUserByUsername(registerForm.getUsername()).isEmpty())
-            return "account does not exist";
-        if(!userDao.findUserByUsername(registerForm.getUsername()).get().getPassword().equals(registerForm.getPassword()))
-            return "password is incorrect";
-        return "OK";
+    public User handleLogin(RegisterForm registerForm) {
+        if (userDao.findUserByUsername(registerForm.getUsername()) == null)
+            return null;
+        if(!userDao.findUserByUsername(registerForm.getUsername()).get().getPassword().equals(registerForm.getPassword())) {
+            return null;
+        }
+        User user = userDao.findUserByUsername(registerForm.getUsername()).get();
+        System.out.println(user);
+        return user;
     }
 
+    @Override
+    public User checkUser(RegisterForm registerForm){
+        return userDao.checkUser(registerForm.getUsername(), registerForm.getPassword());
+    }
+
+    @Override
+    public Boolean checkUserExist(String username){
+        return userDao.findUserByUsername(username).isPresent();
+    }
+
+    @Override
+    public Boolean checkUserExistByEmail(String email){
+        return userDao.findUserByEmail(email).isPresent();
+    }
 }

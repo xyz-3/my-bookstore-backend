@@ -14,11 +14,13 @@ public interface UserDao {
 //
 //    User getUserById(Long id);
 
-    void addUser(RegisterForm registerForm);
+    User addUser(RegisterForm registerForm);
 
 //    void updateUser(User user);
 
     Optional<User> findUserByEmail(String email);
+
+    User checkUser(String username, String password);
 
 //    Set<User> getAllUsers();
 
