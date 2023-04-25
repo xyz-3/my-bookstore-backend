@@ -4,10 +4,10 @@ public class RegisterForm {
     private String username;
     private String password;
     private String email;
-
     private int role;
-
     private String avatar;
+    private String notes;
+
 
     public String getUsername() {
         return username;
@@ -25,8 +25,11 @@ public class RegisterForm {
         return role;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
     public String getAvatar() {
-        System.out.println(avatar);
         return avatar;
     }
 }

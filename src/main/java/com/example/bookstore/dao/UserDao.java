@@ -12,7 +12,7 @@ public interface UserDao {
 
 //    User getUserByUsername(String username);
 //
-//    User getUserById(Long id);
+    User getUserById(Long id);
 
     User addUser(RegisterForm registerForm);
 
@@ -20,8 +20,10 @@ public interface UserDao {
 
     Optional<User> findUserByEmail(String email);
 
-    User checkUser(String username, String password);
+//    User checkUser(String username, String password);
 
 //    Set<User> getAllUsers();
+
+    User changeInfo(Integer id, RegisterForm registerForm);
 
 }

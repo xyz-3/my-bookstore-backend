@@ -1,8 +1,11 @@
 package com.example.bookstore.service.impl;
 
+import com.example.bookstore.dao.UserAuthDao;
 import com.example.bookstore.entity.User;
+import com.example.bookstore.entity.UserAuth;
 import com.example.bookstore.service.UserService;
 import com.example.bookstore.dao.UserDao;
+import com.example.bookstore.util.request.LoginForm;
 import com.example.bookstore.util.request.RegisterForm;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final UserAuthDao userAuthDao;
 
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, UserAuthDao userAuthDao) {
         this.userDao = userDao;
+        this.userAuthDao = userAuthDao;
     }
 
     @Override
@@ -22,25 +27,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User handleRegister(RegisterForm registerForm) {
-        return userDao.addUser(registerForm);
-    }
-
-    @Override
-    public User handleLogin(RegisterForm registerForm) {
-        if (userDao.findUserByUsername(registerForm.getUsername()) == null)
-            return null;
-        if(!userDao.findUserByUsername(registerForm.getUsername()).get().getPassword().equals(registerForm.getPassword())) {
-            return null;
-        }
-        User user = userDao.findUserByUsername(registerForm.getUsername()).get();
-        System.out.println(user);
+        User user = userDao.addUser(registerForm);
+        userAuthDao.addUserAuth(user, registerForm.getPassword());
         return user;
     }
-
     @Override
-    public User checkUser(RegisterForm registerForm){
-        return userDao.checkUser(registerForm.getUsername(), registerForm.getPassword());
+    public UserAuth handleLogin(LoginForm loginForm) {
+        String username = loginForm.getUsername();
+        String password = loginForm.getPassword();
+        if(userDao.findUserByUsername(username).isEmpty()){
+            return null;
+        }
+        User user = userDao.findUserByUsername(username).get();
+        UserAuth userAuth = userAuthDao.getUserAuthByUser(user);
+        if(userAuth.getPassword().equals(password)){
+            return userAuth;
+        }else{
+            return null;
+        }
     }
+
+//    @Override
+//    public User checkUser(RegisterForm registerForm){
+//        return userDao.checkUser(registerForm.getUsername(), registerForm.getPassword());
+//    }
+//    @Override
+//    public UserAuth checkUser(String username, String password){
+//        return userDao.checkUser(username, password);
+//    }
 
     @Override
     public Boolean checkUserExist(String username){
@@ -51,4 +65,15 @@ public class UserServiceImpl implements UserService {
     public Boolean checkUserExistByEmail(String email){
         return userDao.findUserByEmail(email).isPresent();
     }
+
+    @Override
+    public User changeInfo(Integer id, RegisterForm registerForm){
+        return userDao.changeInfo(id, registerForm);
+    }
+
+    @Override
+    public User getUserById(Long id){
+        return userDao.getUserById(id);
+    }
+
 }

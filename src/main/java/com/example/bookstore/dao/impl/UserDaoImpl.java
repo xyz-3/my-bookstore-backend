@@ -28,10 +28,13 @@ public class UserDaoImpl implements UserDao {
     public User addUser(RegisterForm registerForm) {
         User user = new User();
         user.setUsername(registerForm.getUsername());
-        user.setPassword(registerForm.getPassword());
+//        user.setPassword(registerForm.getPassword());
         user.setEmail(registerForm.getEmail());
         user.setRole(registerForm.getRole());
         user.setAvatar(Objects.equals(registerForm.getAvatar(), "") ? Constant.default_avatar : registerForm.getAvatar());
+        System.out.println(registerForm.getNotes());
+        user.setNotes(Objects.equals(registerForm.getNotes(), "") ? Constant.default_notes : registerForm.getNotes());
+        System.out.println(registerForm.getNotes());
         userRepository.save(user);
         return user;
     }
@@ -41,8 +44,25 @@ public class UserDaoImpl implements UserDao {
         return userRepository.findByEmail(email);
     }
 
+//    @Override
+//    public User checkUser(String username, String password){
+//        return userRepository.checkUser(username, password);
+//    }
+
     @Override
-    public User checkUser(String username, String password){
-        return userRepository.checkUser(username, password);
+    public User changeInfo(Integer id, RegisterForm registerForm){
+        User user = userRepository.findById(id);
+        user.setUsername(registerForm.getUsername());
+        user.setEmail(registerForm.getEmail());
+        user.setRole(registerForm.getRole());
+        user.setAvatar(Objects.equals(registerForm.getAvatar(), "") ? Constant.default_avatar : registerForm.getAvatar());
+        user.setNotes(Objects.equals(registerForm.getNotes(), "") ? Constant.default_notes : registerForm.getNotes());
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User getUserById(Long id){
+        return userRepository.findById(id).get();
     }
 }
