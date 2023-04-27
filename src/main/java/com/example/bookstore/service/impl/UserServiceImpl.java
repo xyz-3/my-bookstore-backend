@@ -76,4 +76,6 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserById(id);
     }
 
+    public static class CartServiceImpl {
+    }
 }

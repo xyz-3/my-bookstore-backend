@@ -22,9 +22,6 @@ public class User {
     @Column(name = "username", length = 64, nullable = false, unique = true)
     private String username;
 
-//    @Column(name = "password", length = 64, nullable = false)
-//    private String password;
-
     @Column(name = "email", length = 64, nullable = false, unique = true)
     private String email;
 
@@ -39,30 +36,17 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserAuth userAuth;
-//
-//    @Column(name = "registertime", length = 64, nullable = false)
-//    private Date registerTime;
 
-//    @JsonIgnoreProperties(value = {"user", "goodsList"})
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Order> orderList;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Goods> goodsList;
+    @OneToMany(mappedBy = "adder" , cascade = CascadeType.ALL)
+    private List<CartItem> cart;
 
 
-//    public User(String username, String password, String email, String role, Date registerTime) {
-//        this.username = username;
-//        this.password = password;
-//        this.email = email;
-//        this.role = role;
-//        this.avatar = "";
-//        this.registerTime = registerTime;
-//    }
     public User(String username, String email, String avatar, int role) {
         this.username = username;
-//        this.password = password;
         this.email = email;
         if(avatar == null){
             this.avatar = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.veryicon.com%2Ficons%2Finternet--web%2Fprejudice%2Fuser-128.html&psig=AOvVaw0qEA8PeNe__lU0QefEoNxl&ust=1681628820335000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCLDOudupq_4CFQAAAAAdAAAAABAD";

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -11,6 +13,7 @@ import lombok.Setter;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "title", length = 128, nullable = false)
@@ -33,13 +36,18 @@ public class Book {
     @Column(name = "publisher", length = 64, nullable = false)
     private String publisher;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<CartItem> cartItemSet;
+
+//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+//    private List<OrderItem> orderItemSet;
+
 
     public Book(String title, String author, String introduction, String image, Double price, String publisher) {
         this.title = title;
         this.author = author;
         this.introduction = introduction;
         this.image = image;
-//        this.ISBN = ISBN;
         this.price = price;
         this.publisher = publisher;
     }

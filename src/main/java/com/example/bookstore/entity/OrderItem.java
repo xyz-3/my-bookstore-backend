@@ -1,5 +1,6 @@
 package com.example.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,28 +14,20 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "book_id", nullable = false)
-    private Long book_id;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-//    @Column(name = "orderId", nullable = false)
-//    private Long orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Order order;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-//    @Column(name = "price", nullable = false)
-//    private Double price;
-
-    @Column(name = "user_id", nullable = false)
-    private Long user_id;
-
-    public OrderItem(Long bookId, Integer quantity, Long userId) {
-        this.book_id = bookId;
-//        this.orderId = orderId;
-        this.quantity = quantity;
-//        this.price = price;
-        this.user_id = userId;
-    }
+    @Column(name = "price", nullable = false)
+    private Double price;
 
     public OrderItem() {
     }

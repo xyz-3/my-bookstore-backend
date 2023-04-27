@@ -2,8 +2,12 @@ package com.example.bookstore.controller;
 
 import com.example.bookstore.entity.Book;
 import com.example.bookstore.service.BookService;
+import com.example.bookstore.util.msgutils.Msg;
+import com.example.bookstore.util.response.BookForm;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +26,7 @@ public class BookController {
 
     @RequestMapping(value = "/api/books", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
-    public List<Book> getAllBooks() {
+    public List<BookForm> getAllBooks() {
         return bookService.getAllBooks();
     }
 }

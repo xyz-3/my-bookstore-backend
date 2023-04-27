@@ -3,8 +3,10 @@ package com.example.bookstore.service.impl;
 import com.example.bookstore.dao.BookDao;
 import com.example.bookstore.entity.Book;
 import com.example.bookstore.service.BookService;
+import com.example.bookstore.util.response.BookForm;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +29,20 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public List<Book> getAllBooks() {
-        return bookDao.findAll();
+    public List<BookForm> getAllBooks() {
+        List<Book> bookList = bookDao.findAll();
+        List<BookForm> bookFormList = new ArrayList<>();
+        for(Book book : bookList) {
+            BookForm bookForm = new BookForm();
+            bookForm.setId(book.getId());
+            bookForm.setTitle(book.getTitle());
+            bookForm.setAuthor(book.getAuthor());
+            bookForm.setPrice(book.getPrice());
+            bookForm.setImage(book.getImage());
+            bookForm.setPublisher(book.getPublisher());
+            bookForm.setPublisher(book.getPublisher());
+            bookFormList.add(bookForm);
+        }
+        return bookFormList;
     }
 }
