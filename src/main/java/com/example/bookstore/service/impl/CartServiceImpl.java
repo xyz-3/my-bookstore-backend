@@ -23,21 +23,21 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartItemForm> getCartItems(Integer userId) {
+    public List<CartItem> getCartItems(Integer userId) {
         List<CartItem> cartitems = cartDao.getCartItems(userId);
-        //change cartitems to cartitemforms
-        List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
-        for(CartItem cartItem : cartitems){
-            CartItemForm cartItemForm = new CartItemForm();
-            cartItemForm.setCart_item_id(cartItem.getId());
-            cartItemForm.setBook_id(cartItem.getBook().getId());
-            cartItemForm.setTitle(cartItem.getBook().getTitle());
-            cartItemForm.setNumber(cartItem.getNumber());
-            cartItemForm.setAuthor(cartItem.getBook().getAuthor());
-            cartItemForm.setPrice(cartItem.getBook().getPrice());
-            cartItemForm.setImage(cartItem.getBook().getImage());
-            cartItemForms.add(cartItemForm);
-        }
-        return cartItemForms;
+        return cartitems;
     }
+
+
+    @Override
+    public List<CartItem> deleteCartItem(Integer userId, Long cartId) {
+        return cartDao.deleteCartItem(userId, cartId);
+    }
+
+
+    @Override
+    public List<CartItem> updateCartItem(Integer userId, Long cartId, Long number) {
+        return cartDao.updateCartItem(userId, cartId, number);
+    }
+
 }

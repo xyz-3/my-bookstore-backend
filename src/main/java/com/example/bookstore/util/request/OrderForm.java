@@ -5,7 +5,7 @@ public class OrderForm {
 
     private Integer quantity;
 
-    private Long userId;
+    private Integer userId;
 
 
     public Long getBookId() {
@@ -16,7 +16,7 @@ public class OrderForm {
         return quantity;
     }
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 }

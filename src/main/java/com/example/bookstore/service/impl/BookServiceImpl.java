@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public List<BookForm> getAllBooks() {
+    public List<Book> getAllBooks() {
         List<Book> bookList = bookDao.findAll();
         List<BookForm> bookFormList = new ArrayList<>();
         for(Book book : bookList) {
@@ -43,6 +43,6 @@ public class BookServiceImpl implements BookService {
             bookForm.setPublisher(book.getPublisher());
             bookFormList.add(bookForm);
         }
-        return bookFormList;
+        return bookList;
     }
 }

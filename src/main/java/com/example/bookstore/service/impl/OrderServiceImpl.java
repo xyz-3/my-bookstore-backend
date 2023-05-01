@@ -1,6 +1,7 @@
 package com.example.bookstore.service.impl;
 
 import com.example.bookstore.dao.OrderDao;
+import com.example.bookstore.entity.Order;
 import com.example.bookstore.entity.OrderItem;
 import com.example.bookstore.service.OrderService;
 import com.example.bookstore.util.request.OrderForm;
@@ -23,8 +24,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItem> getAllOrders() {
-        // TODO Auto-generated method stub
-        return orderDao.findAll();
+    public Boolean purchaseBookDirectly(Long bookId, Integer userId, Integer quantity) {
+        return orderDao.purchaseBookDirectly(bookId, userId, quantity);
+    }
+
+    @Override
+    public List<Order> getOrders(Integer id) {
+        return orderDao.getOrders(id);
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(Long id) {
+        return orderDao.getOrderItems(id);
     }
 }

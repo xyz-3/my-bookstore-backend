@@ -26,7 +26,7 @@ public class BookController {
 
     @RequestMapping(value = "/api/books", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
-    public List<BookForm> getAllBooks() {
+    public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
 }

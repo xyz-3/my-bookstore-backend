@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Table(name = "order")
+@Table(name = "`order`")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
 }

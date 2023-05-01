@@ -1,6 +1,7 @@
 package com.example.bookstore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JsonIgnoreProperties("orderItems")
     private Order order;
 
     @Column(name = "quantity", nullable = false)

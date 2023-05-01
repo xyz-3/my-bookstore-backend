@@ -1,13 +1,17 @@
 package com.example.bookstore.controller;
 
 import com.example.bookstore.entity.Book;
+import com.example.bookstore.entity.Order;
 import com.example.bookstore.entity.OrderItem;
 import com.example.bookstore.service.BookService;
 import com.example.bookstore.service.OrderService;
 import com.example.bookstore.util.request.OrderForm;
+import com.example.bookstore.util.response.OrderResponseForm;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,17 +25,30 @@ public class OrderController {
         this.bookService = bookService;
     }
 
-    //add order directly
-    @RequestMapping(value = "/purchase/direct", method = RequestMethod.POST)
+    //get all order
+    @RequestMapping(value = "order/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
-    public void addOrder(@RequestBody @NotNull OrderForm orderForm) {
-        orderService.addOrderDirectly(orderForm);
+    public List<OrderResponseForm> getOrders(@PathVariable("id") Integer id) {
+        List<Order> orders = orderService.getOrders(id);
+        List<OrderResponseForm> orderForms = new ArrayList<>();
+        for(Order order : orders){
+            List<OrderItem> cur_order_items = orderService.getOrderItems(order.getId());
+            Long user_id = order.getUser().getId();
+            Date time = order.getTime();
+            OrderResponseForm orderForm = new OrderResponseForm(cur_order_items, user_id, time);
+            orderForms.add(orderForm);
+        }
+        return orderForms;
     }
 
-    //get all order
-    @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
+
+    //purchase a book directly from book detail page
+    @RequestMapping(value = "book/purchaseDirectly", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
-    public List<OrderItem> getAllOrders() {
-        return orderService.getAllOrders();
+    public Boolean purchaseBookDirectly(@RequestBody @NotNull OrderForm orderForm) {
+        Long bookId = orderForm.getBookId();
+        Integer userId = orderForm.getUserId();
+        Integer quantity = orderForm.getQuantity();
+        return orderService.purchaseBookDirectly(bookId, userId, quantity);
     }
 }

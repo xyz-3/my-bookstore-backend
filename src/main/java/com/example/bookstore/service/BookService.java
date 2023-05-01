@@ -10,7 +10,7 @@ public interface BookService {
 
     Book getBookByTitle(String title);
 
-    List<BookForm> getAllBooks();
+    List<Book> getAllBooks();
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +20,11 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "book_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"cartItemSet"})
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "adder_id", referencedColumnName = "id")
+    @JsonIgnoreProperties
     private User adder;
 }

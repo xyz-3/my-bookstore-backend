@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.example.bookstore.repository.CartRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,6 +51,34 @@ public class CartDaoImpl implements CartDao{
         if(user == null){
             return null;
         }else{
+//            return user.getCart();
+            return cartRepository.findAllByAdder_Id(userId);
+        }
+    }
+
+    @Override
+    public List<CartItem> deleteCartItem(Integer userId, Long cartId) {
+        User user = userRepository.findById(userId);
+        if(user == null){
+            return null;
+        }else{
+            CartItem cartItem = cartRepository.getCartItemById(cartId);
+            user.getCart().remove(cartItem);
+            userRepository.save(user);
+            cartRepository.delete(cartItem);
+            return user.getCart();
+        }
+    }
+
+    @Override
+    public List<CartItem> updateCartItem(Integer userId, Long cartId, Long number) {
+        User user = userRepository.findById(userId);
+        if(user == null){
+            return null;
+        }else{
+            CartItem cartItem = cartRepository.getCartItemById(cartId);
+            cartItem.setNumber(number);
+            cartRepository.save(cartItem);
             return user.getCart();
         }
     }

@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties(value = {"userAuth", "orders", "cart"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,13 +36,15 @@ public class User {
     private String notes;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties
     private UserAuth userAuth;
 
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
 
     @OneToMany(mappedBy = "adder" , cascade = CascadeType.ALL)
+    @JsonIgnoreProperties
     private List<CartItem> cart;
 
 

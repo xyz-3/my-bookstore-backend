@@ -8,4 +8,8 @@ public interface CartDao {
     Boolean addBookToCart(Long bookId, Integer userId, Long number);
 
     List<CartItem> getCartItems(Integer userId);
+
+    List<CartItem> deleteCartItem(Integer userId, Long cartId);
+
+    List<CartItem> updateCartItem(Integer userId, Long cartId, Long number);
 }

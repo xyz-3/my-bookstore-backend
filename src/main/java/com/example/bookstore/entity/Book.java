@@ -1,5 +1,6 @@
 package com.example.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "book")
+@JsonIgnoreProperties(value = {"cartItemSet", "orderItemSet"})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,20 +29,22 @@ public class Book {
     @Column(name = "image", length = 16384)
     private String image;
 
-//    @Column(name = "ISBN", length = 32, nullable = false, unique = true)
-//    private String ISBN;
-
     @Column(name = "price", length = 8, nullable = false)
     private Double price;
 
     @Column(name = "publisher", length = 64, nullable = false)
     private String publisher;
 
+    @Column(name = "stock", nullable = false)
+    private Long stock;
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = {"book"})
     private List<CartItem> cartItemSet;
 
-//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-//    private List<OrderItem> orderItemSet;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = {"book"})
+    private List<OrderItem> orderItemSet;
 
 
     public Book(String title, String author, String introduction, String image, Double price, String publisher) {
