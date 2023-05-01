@@ -14,4 +14,8 @@ public interface OrderService {
     List<Order> getOrders(Integer id);
 
     List<OrderItem> getOrderItems(Long id);
+
+    void addCartOrder(Integer userId, List<Long> cartItemIds);
+
+
 }

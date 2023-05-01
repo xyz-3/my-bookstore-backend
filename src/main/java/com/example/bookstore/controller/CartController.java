@@ -2,10 +2,12 @@ package com.example.bookstore.controller;
 
 import com.example.bookstore.entity.CartItem;
 import com.example.bookstore.service.CartService;
+import com.example.bookstore.service.OrderService;
 import com.example.bookstore.util.request.CartAddForm;
 import com.example.bookstore.util.response.CartItemForm;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +16,14 @@ import java.util.List;
 @Transactional
 public class CartController {
 
+    @Autowired
     private CartService cartService;
+    @Autowired
+    private OrderService orderService;
 
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, OrderService orderService) {
         this.cartService = cartService;
+        this.orderService = orderService;
     }
 
 
@@ -85,6 +91,21 @@ public class CartController {
             cartItemForm.setAuthor(cartItem.getBook().getAuthor());
             cartItemForm.setPrice(cartItem.getBook().getPrice());
             cartItemForm.setImage(cartItem.getBook().getImage());
+            cartItemForms.add(cartItemForm);
+        }
+        return cartItemForms;
+    }
+
+    @RequestMapping(value = "api/cart/purchase/{id}", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<CartItemForm> cartPurchase(@PathVariable("id") Integer userId, @RequestBody List<Long> cartItemIds){
+        //add cart items to order table
+        orderService.addCartOrder(userId, cartItemIds);
+        //delete cart items in cart table
+        List<CartItem> cartItems = cartService.deleteCartItem(userId, cartItemIds);
+        List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
+        for(CartItem cartItem : cartItems){
+            CartItemForm cartItemForm = new CartItemForm(cartItem);
             cartItemForms.add(cartItemForm);
         }
         return cartItemForms;

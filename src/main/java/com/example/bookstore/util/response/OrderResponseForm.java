@@ -2,6 +2,7 @@ package com.example.bookstore.util.response;
 
 import com.example.bookstore.entity.OrderItem;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,12 +18,6 @@ public class OrderResponseForm {
     private Double total_price;
 
     private List<OrderItemForm> orderItemForms;
-
-//    public void setOrderItemsTime(){
-//        for(OrderItemForm orderItemForm : orderItemForms){
-//            orderItemForm.setTime(time);
-//        }
-//    }
 
     public void calculateTotalPrice(){
         Double totalPrice = 0.0;

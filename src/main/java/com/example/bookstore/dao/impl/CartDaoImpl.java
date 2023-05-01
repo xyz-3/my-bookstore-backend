@@ -51,7 +51,6 @@ public class CartDaoImpl implements CartDao{
         if(user == null){
             return null;
         }else{
-//            return user.getCart();
             return cartRepository.findAllByAdder_Id(userId);
         }
     }
@@ -79,6 +78,26 @@ public class CartDaoImpl implements CartDao{
             CartItem cartItem = cartRepository.getCartItemById(cartId);
             cartItem.setNumber(number);
             cartRepository.save(cartItem);
+            return user.getCart();
+        }
+    }
+
+    @Override
+    public List<CartItem> deleteCartItem(Integer userId, List<Long> cartIds) {
+        User user = userRepository.findById(userId);
+        if(user == null){
+            return null;
+        }else{
+//            List<CartItem> cartItems = new ArrayList<>();
+            for(Long cartId : cartIds){
+                CartItem cartItem = cartRepository.getCartItemById(cartId);
+                user.getCart().remove(cartItem);
+                cartRepository.delete(cartItem);
+//                cartItems.add(cartItem);
+            }
+//            user.getCart().removeAll(cartItems);
+            userRepository.save(user);
+//            cartRepository.deleteAll(cartItems);
             return user.getCart();
         }
     }

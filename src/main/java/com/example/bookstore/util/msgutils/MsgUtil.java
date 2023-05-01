@@ -1,4 +1,5 @@
 package com.example.bookstore.util.msgutils;
+import com.example.bookstore.util.response.UserInfoForm;
 import net.sf.json.JSONObject;
 
 public class MsgUtil {

@@ -14,4 +14,6 @@ public interface CartService {
     List<CartItem> deleteCartItem(Integer userId, Long cartId);
 
     List<CartItem> updateCartItem(Integer userId, Long cartId, Long number);
+
+    List<CartItem> deleteCartItem(Integer userId, List<Long> cartIds);
 }

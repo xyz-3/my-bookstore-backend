@@ -1,14 +1,8 @@
 package com.example.bookstore.dao.impl;
 
 import com.example.bookstore.dao.OrderDao;
-import com.example.bookstore.entity.Book;
-import com.example.bookstore.entity.Order;
-import com.example.bookstore.entity.OrderItem;
-import com.example.bookstore.entity.User;
-import com.example.bookstore.repository.BookRepository;
-import com.example.bookstore.repository.OrderItemRepository;
-import com.example.bookstore.repository.OrderRepository;
-import com.example.bookstore.repository.UserRepository;
+import com.example.bookstore.entity.*;
+import com.example.bookstore.repository.*;
 import com.example.bookstore.util.request.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,23 +20,15 @@ public class OrderDaoImpl implements OrderDao {
     private final BookRepository bookRepository;
     @Autowired
     private final OrderRepository orderRepository;
+    @Autowired
+    private final CartRepository cartRepository;
 
-    public OrderDaoImpl(OrderItemRepository orderItemRepository, UserRepository userRepository, BookRepository bookRepository, OrderRepository orderRepository) {
+    public OrderDaoImpl(OrderItemRepository orderItemRepository, UserRepository userRepository, BookRepository bookRepository, OrderRepository orderRepository, CartRepository cartRepository) {
         this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.orderRepository = orderRepository;
-    }
-
-    @Override
-    public void addOrder(OrderForm orderForm) {
-//        OrderItem orderItem = new OrderItem();
-//        System.out.println("add a new order: " + orderItem);
-//        orderItem.setBookId(orderForm.getBookId());
-//        orderItem.setUserId(orderForm.getUserId());
-//        orderItem.setQuantity(orderForm.getQuantity());
-//        orderRepository.save(orderItem);
-
+        this.cartRepository = cartRepository;
     }
 
     @Override
@@ -83,11 +69,36 @@ public class OrderDaoImpl implements OrderDao {
         if(user == null) return null;
         return orderRepository.findAllByUser_id(user_id);
     }
-
     @Override
     public List<OrderItem> getOrderItems(Long order_id) {
         Order order = orderRepository.findById(order_id).get();
         if(order == null) return null;
         return orderItemRepository.findAllByOrder_id(order_id);
+    }
+
+    @Override
+    public void addCartOrder(Integer userId, List<Long> cartItemIds) {
+        User user = userRepository.findById(userId);
+        if(user == null) return;
+        Order order = new Order();
+        order.setUser(user);
+        order.setTime(new Date());
+        orderRepository.save(order);
+        for(Long cartItemId : cartItemIds) {
+            OrderItem orderItem = new OrderItem();
+            CartItem cartItem = cartRepository.getCartItemById(cartItemId);
+
+            Book book = cartItem.getBook();
+            if(book == null) return;
+            if(book.getStock() < cartItem.getNumber()) return;
+            book.setStock(book.getStock() - cartItem.getNumber());
+            bookRepository.save(book);
+
+            orderItem.setBook(book);
+            orderItem.setQuantity(Math.toIntExact(cartItem.getNumber()));
+            orderItem.setPrice(cartItem.getBook().getPrice() * cartItem.getNumber());
+            orderItem.setOrder(order);
+            orderItemRepository.save(orderItem);
+        }
     }
 }

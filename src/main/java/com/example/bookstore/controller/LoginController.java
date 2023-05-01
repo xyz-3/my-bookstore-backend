@@ -9,6 +9,7 @@ import com.example.bookstore.util.msgutils.MsgUtil;
 import com.example.bookstore.util.request.CheckForm;
 import com.example.bookstore.util.request.LoginForm;
 import com.example.bookstore.util.request.RegisterForm;
+import com.example.bookstore.util.response.UserInfoForm;
 import com.example.bookstore.util.sessionutils.SessionUtil;
 import jakarta.transaction.Transactional;
 import net.sf.json.JSON;
@@ -41,11 +42,7 @@ public class LoginController {
             ret_data.put("username", user.getUsername());
             ret_data.put("id", user.getId());
             ret_data.put("role", user.getRole());
-//            ret_data.put("email", user.getEmail());
-//            ret_data.put("notes", user.getNotes());
-//            ret_data.put("avatar", user.getAvatar());
-
-            System.out.println("login ret" + ret_data);
+            ret_data.put("avatar", user.getAvatar());
 
             return MsgUtil.makeMsg(MsgCode.SUCCESS, "Login success", ret_data);
         }
@@ -79,24 +76,20 @@ public class LoginController {
 
     @RequestMapping(value = "/checkSession", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
-    public Msg checkSession(@RequestBody @NotNull CheckForm checkForm){
+    public UserInfoForm checkSession(@RequestBody @NotNull CheckForm checkForm){
         Long id = checkForm.getId();
         User user = userService.getUserById(id);
-        System.out.println(user);
-
         if(user == null){
-            return MsgUtil.makeMsg(MsgCode.NOT_LOGGED_IN_ERROR);
+            return null;
         }
         else{
-            //change user to json format
-            JSONObject data = new JSONObject();
-            data.put("username", user.getUsername());
-            data.put("id", user.getId());
-            data.put("role", user.getRole());
-            data.put("email", user.getEmail());
-            data.put("notes", user.getNotes());
-            data.put("avatar", user.getAvatar());
-            return MsgUtil.makeMsg(MsgCode.SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, data);
+            UserInfoForm userInfoForm = new UserInfoForm();
+            userInfoForm.setUsername(user.getUsername());
+            userInfoForm.setId(user.getId());
+            userInfoForm.setEmail(user.getEmail());
+            userInfoForm.setAvatar(user.getAvatar());
+            userInfoForm.setNotes(user.getNotes());
+            return userInfoForm;
         }
     }
 

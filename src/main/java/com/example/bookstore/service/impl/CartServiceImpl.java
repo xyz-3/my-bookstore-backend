@@ -40,4 +40,9 @@ public class CartServiceImpl implements CartService {
         return cartDao.updateCartItem(userId, cartId, number);
     }
 
+    @Override
+    public List<CartItem> deleteCartItem(Integer userId, List<Long> cartIds) {
+        return cartDao.deleteCartItem(userId, cartIds);
+    }
+
 }

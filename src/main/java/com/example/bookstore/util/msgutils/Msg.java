@@ -1,5 +1,6 @@
 package com.example.bookstore.util.msgutils;
 
+import com.example.bookstore.util.response.UserInfoForm;
 import net.sf.json.JSONObject;
 
 
@@ -7,6 +8,8 @@ public class Msg {
     private int status;
     private String msg;
     private JSONObject data;
+
+    private UserInfoForm userInfoForm;
 
     Msg(MsgCode msg, JSONObject data){
         this.status = msg.getStatus();
@@ -42,6 +45,13 @@ public class Msg {
         this.status = status;
         this.msg = extra;
         this.data = null;
+    }
+
+    Msg(int status, String extra, UserInfoForm userInfoForm){
+        this.status = status;
+        this.msg = extra;
+        this.data = null;
+        this.userInfoForm = userInfoForm;
     }
 
     public int getStatus() {

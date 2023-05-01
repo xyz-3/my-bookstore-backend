@@ -1,5 +1,9 @@
 package com.example.bookstore.util.response;
 
+import com.example.bookstore.entity.CartItem;
+
+import java.util.List;
+
 public class CartItemForm {
     private Long cart_item_id;
 
@@ -26,6 +30,15 @@ public class CartItemForm {
     }
 
     public CartItemForm() {
+    }
+
+    public CartItemForm(CartItem cartItems){
+        this.cart_item_id = cartItems.getId();
+        this.title = cartItems.getBook().getTitle();
+        this.number = cartItems.getNumber();
+        this.author = cartItems.getBook().getAuthor();
+        this.price = cartItems.getBook().getPrice();
+        this.image = cartItems.getBook().getImage();
     }
 
     public Long getCart_item_id() {
