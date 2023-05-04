@@ -7,7 +7,7 @@ import com.example.bookstore.util.request.OrderForm;
 import java.util.List;
 
 public interface OrderService {
-    void addOrderDirectly(OrderForm orderForm);
+//    void addOrderDirectly(OrderForm orderForm);
 
     Boolean purchaseBookDirectly(Long bookId, Integer userId, Integer quantity);
 

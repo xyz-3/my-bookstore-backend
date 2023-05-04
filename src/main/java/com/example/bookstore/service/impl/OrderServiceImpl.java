@@ -17,11 +17,11 @@ public class OrderServiceImpl implements OrderService {
         this.orderDao = orderDao;
     }
 
-    @Override
-    public void addOrderDirectly(OrderForm orderForm) {
-        // TODO Auto-generated method stub
-        orderDao.addOrder(orderForm);
-    }
+//    @Override
+//    public void addOrderDirectly(OrderForm orderForm) {
+//        // TODO Auto-generated method stub
+//        orderDao.addOrder(orderForm);
+//    }
 
     @Override
     public Boolean purchaseBookDirectly(Long bookId, Integer userId, Integer quantity) {
