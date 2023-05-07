@@ -29,7 +29,7 @@ public class OrderResponseForm {
 
 
     public OrderResponseForm(List<OrderItem> orderItemForms, Long user_id, Date time){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         this.time = sdf.format(time);
         List<OrderItemForm> orderItemFormList = new ArrayList<>();
         for(OrderItem orderItem : orderItemForms){

@@ -42,7 +42,6 @@ public class CartController {
     public List<CartItemForm> getCartItems(@PathVariable("id") Integer id) {
         List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
         List<CartItem> cartItems = cartService.getCartItems(id);
-        //change cartitems to cartitemforms
         for(CartItem cartItem : cartItems){
             CartItemForm cartItemForm = new CartItemForm();
             cartItemForm.setCart_item_id(cartItem.getId());

@@ -44,11 +44,6 @@ public class UserDaoImpl implements UserDao {
         return userRepository.findByEmail(email);
     }
 
-//    @Override
-//    public User checkUser(String username, String password){
-//        return userRepository.checkUser(username, password);
-//    }
-
     @Override
     public User changeInfo(Integer id, RegisterForm registerForm){
         User user = userRepository.findById(id);

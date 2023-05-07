@@ -3,6 +3,7 @@ package com.example.bookstore.service.impl;
 import com.example.bookstore.dao.BookDao;
 import com.example.bookstore.entity.Book;
 import com.example.bookstore.service.BookService;
+import com.example.bookstore.util.request.BookStorageForm;
 import com.example.bookstore.util.response.BookForm;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,10 @@ public class BookServiceImpl implements BookService {
             bookFormList.add(bookForm);
         }
         return bookList;
+    }
+
+    @Override
+    public Boolean setBookInfo(Long id, BookStorageForm bookStorageForm) {
+        return bookDao.setBookInfo(id, bookStorageForm);
     }
 }

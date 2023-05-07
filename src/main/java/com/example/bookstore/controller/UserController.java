@@ -50,9 +50,9 @@ public class UserController {
             ret_data.put("username", user.getUsername());
             ret_data.put("id", user.getId());
             ret_data.put("role", user.getRole());
-            ret_data.put("email", user.getEmail());
-            ret_data.put("notes", user.getNotes());
-            ret_data.put("avatar", user.getAvatar());
+//            ret_data.put("email", user.getEmail());
+//            ret_data.put("notes", user.getNotes());
+//            ret_data.put("avatar", user.getAvatar());
             return MsgUtil.makeMsg(MsgUtil.SUCCESS, "Change user info success", ret_data);
         }
     }

@@ -2,14 +2,15 @@ package com.example.bookstore.controller;
 
 import com.example.bookstore.entity.Book;
 import com.example.bookstore.service.BookService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.bookstore.util.request.BookStorageForm;
+import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Transactional
 public class AdminController {
     private final BookService bookService;
 
@@ -22,5 +23,11 @@ public class AdminController {
     public List<Book> getStorage(){
         List<Book> ret = bookService.getAllBooks();
         return bookService.getAllBooks();
+    }
+
+    @RequestMapping(value = "/api/storage/{id}", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public boolean changeBookStorageInfo(@PathVariable("id") Long id, @RequestBody @NotNull BookStorageForm bookStorageForm){
+        return bookService.setBookInfo(id, bookStorageForm);
     }
 }
