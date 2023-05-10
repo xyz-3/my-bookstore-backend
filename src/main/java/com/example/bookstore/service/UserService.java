@@ -6,6 +6,8 @@ import com.example.bookstore.util.request.LoginForm;
 import com.example.bookstore.util.request.RegisterForm;
 import jdk.jfr.consumer.RecordingFile;
 
+import java.util.List;
+
 public interface UserService {
 
     User getUserByUserName(String username);
@@ -26,4 +28,6 @@ public interface UserService {
     User changeInfo(Integer id, RegisterForm registerForm);
 
     User getUserById(Long id);
+
+    List<User> getAllUsers();
 }

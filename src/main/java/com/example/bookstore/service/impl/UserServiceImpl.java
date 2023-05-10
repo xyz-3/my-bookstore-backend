@@ -9,6 +9,8 @@ import com.example.bookstore.util.request.LoginForm;
 import com.example.bookstore.util.request.RegisterForm;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -76,6 +78,8 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserById(id);
     }
 
-    public static class CartServiceImpl {
+    @Override
+    public List<User> getAllUsers(){
+        return userDao.getAllUsers();
     }
 }

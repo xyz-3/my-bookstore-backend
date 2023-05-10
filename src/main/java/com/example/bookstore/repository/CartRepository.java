@@ -1,5 +1,6 @@
 package com.example.bookstore.repository;
 
+import com.example.bookstore.entity.Book;
 import com.example.bookstore.entity.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -18,4 +19,6 @@ public interface CartRepository extends JpaRepository<CartItem, Long> {
     CartItem getById(Long cart_item_id);
 
     List<CartItem> findAllByAdder_Id(Integer user_id);
+
+    List<CartItem> findAllByBook(Book book);
 }

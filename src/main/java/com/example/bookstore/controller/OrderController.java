@@ -34,8 +34,9 @@ public class OrderController {
         for(Order order : orders){
             List<OrderItem> cur_order_items = orderService.getOrderItems(order.getId());
             Long user_id = order.getUser().getId();
+            String user_name = order.getUser().getUsername();
             Date time = order.getTime();
-            OrderResponseForm orderForm = new OrderResponseForm(cur_order_items, user_id, time);
+            OrderResponseForm orderForm = new OrderResponseForm(cur_order_items, user_id, time, user_name);
             orderForms.add(orderForm);
         }
         return orderForms;

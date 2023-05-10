@@ -51,4 +51,15 @@ public class BookServiceImpl implements BookService {
     public Boolean setBookInfo(Long id, BookStorageForm bookStorageForm) {
         return bookDao.setBookInfo(id, bookStorageForm);
     }
+
+
+    @Override
+    public List<Book> deleteBook(Long id) {
+        return bookDao.deleteById(id);
+    }
+
+    @Override
+    public Long addBook(BookStorageForm bookStorageForm) {
+        return bookDao.addBook(bookStorageForm);
+    }
 }

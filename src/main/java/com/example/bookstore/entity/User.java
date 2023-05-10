@@ -32,18 +32,21 @@ public class User {
     @Column(name = "role", nullable = false)
     private int role;
 
+    @Column(name = "blocked", nullable = false)
+    private boolean blocked;
+
     @Column(name = "notes" , length = 10240, nullable = true)
     private String notes;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties
     private UserAuth userAuth;
 
     @JsonIgnoreProperties(value = {"user"})
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "adder" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adder" , cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties
     private List<CartItem> cart;
 

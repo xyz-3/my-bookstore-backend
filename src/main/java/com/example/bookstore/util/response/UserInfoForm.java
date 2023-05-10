@@ -1,5 +1,7 @@
 package com.example.bookstore.util.response;
 
+import com.example.bookstore.entity.User;
+
 public class UserInfoForm {
     private Long id;
 
@@ -11,12 +13,27 @@ public class UserInfoForm {
 
     private String notes;
 
+    private int role;
+
     public UserInfoForm(Long id, String username, String avatar, String email, String notes){
         this.id = id;
         this.username = username;
         this.avatar = avatar;
         this.email = email;
         this.notes = notes;
+    }
+
+    public UserInfoForm(User user){
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.avatar = user.getAvatar();
+        this.email = user.getEmail();
+//        this.notes = user.getNotes();
+        this.role = user.getRole();
+    }
+
+    public void setRole(int role){
+        this.role = role;
     }
 
     public void setId(Long id){
@@ -39,6 +56,10 @@ public class UserInfoForm {
         this.notes = notes;
     }
 
+
+    public int getRole(){
+        return this.role;
+    }
     public Long getId(){
         return this.id;
     }

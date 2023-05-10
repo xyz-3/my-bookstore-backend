@@ -17,5 +17,5 @@ public interface OrderService {
 
     void addCartOrder(Integer userId, List<Long> cartItemIds);
 
-
+    List<Order> getAllOrders();
 }

@@ -37,4 +37,10 @@ public class OrderServiceImpl implements OrderService {
     public void addCartOrder(Integer userId, List<Long> cartItemIds) {
         orderDao.addCartOrder(userId, cartItemIds);
     }
+
+    @Override
+    public List<Order> getAllOrders(){
+        return orderDao.getAllOrders();
+    }
+
 }

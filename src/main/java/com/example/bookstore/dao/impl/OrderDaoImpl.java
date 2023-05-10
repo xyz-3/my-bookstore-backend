@@ -101,4 +101,9 @@ public class OrderDaoImpl implements OrderDao {
             orderItemRepository.save(orderItem);
         }
     }
+
+    @Override
+    public List<Order> getAllOrders(){
+        return orderRepository.findAll();
+    }
 }

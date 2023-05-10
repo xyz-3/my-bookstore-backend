@@ -14,4 +14,8 @@ public interface BookDao {
     List<Book> findAll();
 
     Boolean setBookInfo(Long id, BookStorageForm bookStorageForm);
+
+    List<Book> deleteById(Long id);
+
+    Long addBook(BookStorageForm bookStorageForm);
 }

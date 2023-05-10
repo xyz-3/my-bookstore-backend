@@ -15,6 +15,8 @@ public class OrderResponseForm {
 
     private Long userId;
 
+    private String username;
+
     private Double total_price;
 
     private List<OrderItemForm> orderItemForms;
@@ -28,7 +30,7 @@ public class OrderResponseForm {
     }
 
 
-    public OrderResponseForm(List<OrderItem> orderItemForms, Long user_id, Date time){
+    public OrderResponseForm(List<OrderItem> orderItemForms, Long user_id, Date time, String user_name){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         this.time = sdf.format(time);
         List<OrderItemForm> orderItemFormList = new ArrayList<>();
@@ -36,9 +38,9 @@ public class OrderResponseForm {
             orderItemFormList.add(new OrderItemForm(orderItem));
         }
         this.orderItemForms = orderItemFormList;
-//        setOrderItemsTime();
         calculateTotalPrice();
         this.userId = user_id;
+        this.username = user_name;
     }
 
     public void setTime(String time) {
@@ -47,6 +49,10 @@ public class OrderResponseForm {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setTotal_price(Double total_price) {
@@ -63,6 +69,10 @@ public class OrderResponseForm {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public Double getTotal_price() {

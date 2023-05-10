@@ -15,5 +15,7 @@ public interface BookService {
 
     Boolean setBookInfo(Long id, BookStorageForm bookStorageForm);
 
+    List<Book> deleteBook(Long id);
 
+    Long addBook(BookStorageForm bookStorageForm);
 }

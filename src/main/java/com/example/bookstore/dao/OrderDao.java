@@ -17,4 +17,6 @@ public interface OrderDao {
     List<OrderItem> getOrderItems(Long order_id);
 
     void addCartOrder(Integer userId, List<Long> cartItemIds);
+
+    List<Order> getAllOrders();
 }

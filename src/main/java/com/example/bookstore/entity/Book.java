@@ -38,11 +38,11 @@ public class Book {
     @Column(name = "stock", nullable = false)
     private Long stock;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = {"book"})
     private List<CartItem> cartItemSet;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = {"book"})
     private List<OrderItem> orderItemSet;
 

@@ -88,16 +88,12 @@ public class CartDaoImpl implements CartDao{
         if(user == null){
             return null;
         }else{
-//            List<CartItem> cartItems = new ArrayList<>();
             for(Long cartId : cartIds){
                 CartItem cartItem = cartRepository.getCartItemById(cartId);
                 user.getCart().remove(cartItem);
                 cartRepository.delete(cartItem);
-//                cartItems.add(cartItem);
             }
-//            user.getCart().removeAll(cartItems);
             userRepository.save(user);
-//            cartRepository.deleteAll(cartItems);
             return user.getCart();
         }
     }

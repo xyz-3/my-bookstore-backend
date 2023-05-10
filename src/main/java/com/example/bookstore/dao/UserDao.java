@@ -3,6 +3,7 @@ package com.example.bookstore.dao;
 import com.example.bookstore.entity.User;
 import com.example.bookstore.util.request.RegisterForm;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,5 +26,7 @@ public interface UserDao {
 //    Set<User> getAllUsers();
 
     User changeInfo(Integer id, RegisterForm registerForm);
+
+    List<User> getAllUsers();
 
 }

@@ -8,6 +8,7 @@ import com.example.bookstore.entity.User;
 
 import com.example.bookstore.constant.Constant;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -59,5 +60,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserById(Long id){
         return userRepository.findById(id).get();
+    }
+
+
+    @Override
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 }
