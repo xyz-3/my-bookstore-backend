@@ -15,12 +15,15 @@ public class UserInfoForm {
 
     private int role;
 
-    public UserInfoForm(Long id, String username, String avatar, String email, String notes){
+    private boolean blocked;
+
+    public UserInfoForm(Long id, String username, String avatar, String email, String notes, boolean blocked){
         this.id = id;
         this.username = username;
         this.avatar = avatar;
         this.email = email;
         this.notes = notes;
+        this.blocked = blocked;
     }
 
     public UserInfoForm(User user){
@@ -30,6 +33,7 @@ public class UserInfoForm {
         this.email = user.getEmail();
 //        this.notes = user.getNotes();
         this.role = user.getRole();
+        this.blocked = user.isBlocked();
     }
 
     public void setRole(int role){
@@ -56,6 +60,10 @@ public class UserInfoForm {
         this.notes = notes;
     }
 
+    public void setBlocked(boolean blocked){
+        this.blocked = blocked;
+    }
+
 
     public int getRole(){
         return this.role;
@@ -78,6 +86,10 @@ public class UserInfoForm {
 
     public String getNotes(){
         return this.notes;
+    }
+
+    public boolean getBlocked(){
+        return this.blocked;
     }
 
     public UserInfoForm() {}

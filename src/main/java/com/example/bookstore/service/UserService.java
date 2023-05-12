@@ -30,4 +30,6 @@ public interface UserService {
     User getUserById(Long id);
 
     List<User> getAllUsers();
+
+    List<User> setUserStatus(Long id, boolean blocked);
 }

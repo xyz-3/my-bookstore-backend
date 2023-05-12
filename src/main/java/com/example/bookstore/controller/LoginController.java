@@ -32,6 +32,9 @@ public class LoginController {
         UserAuth userAuth = userService.handleLogin(loginForm);
         if(userAuth != null){
             User user = userAuth.getUser();
+            if(user.isBlocked()) {
+                return MsgUtil.makeMsg(MsgCode.ERROR, "User is blocked");
+            }
             JSONObject obj = new JSONObject();
             obj.put("username", user.getUsername());
             obj.put("id", user.getId());

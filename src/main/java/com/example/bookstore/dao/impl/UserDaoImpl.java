@@ -67,4 +67,15 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
+    @Override
+    public List<User> setUserStatus(Long id, boolean blocked){
+        User user = userRepository.findById(id).get();
+        if(user == null) return null;
+        user.setBlocked(blocked);
+        userRepository.save(user);
+        return userRepository.findAll();
+    }
+
+
 }

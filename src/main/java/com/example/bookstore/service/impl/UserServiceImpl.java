@@ -82,4 +82,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers(){
         return userDao.getAllUsers();
     }
+
+    @Override
+    public List<User> setUserStatus(Long id, boolean blocked){
+        return userDao.setUserStatus(id, blocked);
+    }
 }

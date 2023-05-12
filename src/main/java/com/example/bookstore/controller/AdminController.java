@@ -62,7 +62,6 @@ public class AdminController {
     @CrossOrigin(origins = "http://localhost:3000")
     public List<Book> deleteBook(@PathVariable("id") Long id){
         return bookService.deleteBook(id);
-//        return bookService.getAllBooks();
     }
 
     @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
@@ -92,5 +91,11 @@ public class AdminController {
             userInfoForms.add(userInfoForm);
         }
         return userInfoForms;
+    }
+
+    @RequestMapping(value = "/user/setStatus/{id}", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public List<User> setUserStatus(@PathVariable("id") Long id, @RequestBody @NotNull boolean status){
+        return userService.setUserStatus(id, status);
     }
 }

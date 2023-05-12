@@ -29,4 +29,5 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    List<User> setUserStatus(Long id, boolean blocked);
 }
