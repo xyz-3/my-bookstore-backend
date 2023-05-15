@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class OrderItemForm {
+
+    private Long book_id;
     private String book_cover;
 
     private String book_title;
@@ -50,9 +52,18 @@ public class OrderItemForm {
     public OrderItemForm(){}
 
     public OrderItemForm(OrderItem orderItem){
+        this.book_id = orderItem.getBook().getId();
         this.amount = orderItem.getQuantity();
         this.book_cover = orderItem.getBook().getImage();
         this.book_title = orderItem.getBook().getTitle();
         this.book_price = orderItem.getBook().getPrice();
+    }
+
+    public Long getBook_id() {
+        return book_id;
+    }
+
+    public void setBook_id(Long book_id) {
+        this.book_id = book_id;
     }
 }
