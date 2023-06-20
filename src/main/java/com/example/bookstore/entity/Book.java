@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name = "book")
+@Table(name = "book", uniqueConstraints = @UniqueConstraint(columnNames = "isbn"))
 @JsonIgnoreProperties(value = {"cartItemSet", "orderItemSet"})
 public class Book {
     @Id
@@ -25,6 +25,9 @@ public class Book {
 
     @Column(name = "introduction", length = 2048)
     private String introduction;
+
+    @Column(name = "isbn")
+    private String isbn;
 
     @Column(name = "image", length = 16384)
     private String image;

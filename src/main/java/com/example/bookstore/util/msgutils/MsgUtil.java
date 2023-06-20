@@ -13,6 +13,10 @@ public class MsgUtil {
 
     public static final int REGISTER_EMAILEXIST_ERROR = -201;
 
+
+    public static final int UPLOAD_ERROR = -300;
+
+
     public static final String SUCCESS_MSG = "success!";
     public static final String LOGIN_SUCCESS_MSG = "login success!";
     public static final String LOGOUT_SUCCESS_MSG = "logout success!";

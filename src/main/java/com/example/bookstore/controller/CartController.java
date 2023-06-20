@@ -33,7 +33,6 @@ public class CartController {
         Long bookId = cartAddForm.getBook_id();
         Integer userId = cartAddForm.getAdder_id();
         Long number = cartAddForm.getNumber();
-//        System.out.println("bookId: " + bookId + " userId: " + userId + " number: " + number);
         return cartService.addBookToCart(bookId, userId, number);
     }
 

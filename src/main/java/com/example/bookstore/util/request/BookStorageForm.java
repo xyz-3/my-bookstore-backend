@@ -9,6 +9,7 @@ public class BookStorageForm {
     private String publisher;
     private String introduction;
     private Long stock;
+    private String isbn;
 
     public BookStorageForm() {
     }
@@ -45,6 +46,10 @@ public class BookStorageForm {
         return stock;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -75,5 +80,9 @@ public class BookStorageForm {
 
     public void setStock(Long stock) {
         this.stock = stock;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }

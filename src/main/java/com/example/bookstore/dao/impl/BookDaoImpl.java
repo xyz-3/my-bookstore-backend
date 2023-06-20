@@ -18,19 +18,17 @@ import java.util.Optional;
 
 @Repository
 public class BookDaoImpl implements BookDao {
-    @Autowired
+
     private final BookRepository bookRepository;
 
-    @Autowired
+
     private final CartRepository cartRepository;
 
-    @Autowired
     private final OrderItemRepository orderItemRepository;
 
-    @Autowired
     private final OrderRepository orderRepository;
 
-
+    @Autowired
     public BookDaoImpl(BookRepository bookRepository, CartRepository cartRepository, OrderItemRepository orderItemRepository, OrderRepository orderRepository) {
         this.bookRepository = bookRepository;
         this.cartRepository = cartRepository;
@@ -63,6 +61,7 @@ public class BookDaoImpl implements BookDao {
         book.setPublisher(bookStorageForm.getPublisher());
         book.setStock(bookStorageForm.getStock());
         book.setIntroduction(bookStorageForm.getIntroduction());
+        book.setIsbn(bookStorageForm.getIsbn());
         bookRepository.save(book);
         return true;
     }
@@ -98,6 +97,7 @@ public class BookDaoImpl implements BookDao {
         book.setIntroduction(bookStorageForm.getIntroduction());
         book.setPublisher(bookStorageForm.getPublisher());
         book.setStock(bookStorageForm.getStock());
+        book.setIsbn(bookStorageForm.getIsbn());
         if(bookStorageForm.getImage() == null){
             book.setImage("https://th.bing.com/th/id/R.320c59f40934c54d19db1be80808845b?rik=SnMKCkjl%2bm7gzw&riu=http%3a%2f%2fwww.newdesignfile.com%2fpostpic%2f2009%2f11%2fblank-book-cover-template_309782.jpg&ehk=LICeLH8KXMSXYdtEl2nxWFh%2bp5fb%2fOL1IF5SKhm5bwE%3d&risl=&pid=ImgRaw&r=0");
         }else{
