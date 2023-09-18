@@ -3,14 +3,20 @@ package com.example.bookstore.controller;
 import com.example.bookstore.entity.CartItem;
 import com.example.bookstore.service.CartService;
 import com.example.bookstore.service.OrderService;
+import com.example.bookstore.util.msgutils.Msg;
+import com.example.bookstore.util.msgutils.MsgCode;
+import com.example.bookstore.util.msgutils.MsgUtil;
 import com.example.bookstore.util.request.CartAddForm;
 import com.example.bookstore.util.response.CartItemForm;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Transactional
@@ -21,10 +27,8 @@ public class CartController {
     @Autowired
     private OrderService orderService;
 
-    public CartController(CartService cartService, OrderService orderService) {
-        this.cartService = cartService;
-        this.orderService = orderService;
-    }
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
 
     @RequestMapping(value = "/book/addtocart", method = RequestMethod.POST)
@@ -94,11 +98,17 @@ public class CartController {
         return cartItemForms;
     }
 
-    @RequestMapping(value = "api/cart/purchase/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/cart/purchase/{id}", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-    public List<CartItemForm> cartPurchase(@PathVariable("id") Integer userId, @RequestBody List<Long> cartItemIds){
+    public Msg cartPurchase(@PathVariable("id") Integer userId, @RequestBody List<Long> cartItemIds){
         //add cart items to order table
-        orderService.addCartOrder(userId, cartItemIds);
+        String order_uuid = UUID.randomUUID().toString().toUpperCase();
+        JSONObject data = new JSONObject();
+        data.put("uuid", order_uuid);
+        JSONObject msgData = new JSONObject();
+        msgData.put("userId", userId);
+        msgData.put("cartItemIds", cartItemIds);
+        kafkaTemplate.send("cartOrder", order_uuid, msgData.toString());
         //delete cart items in cart table
         List<CartItem> cartItems = cartService.deleteCartItem(userId, cartItemIds);
         List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
@@ -106,7 +116,8 @@ public class CartController {
             CartItemForm cartItemForm = new CartItemForm(cartItem);
             cartItemForms.add(cartItemForm);
         }
-        return cartItemForms;
+        data.put("cartItems", cartItemForms);
+        return MsgUtil.makeMsg(MsgCode.SUCCESS, MsgUtil.SUCCESS_MSG, data);
     }
 
 }

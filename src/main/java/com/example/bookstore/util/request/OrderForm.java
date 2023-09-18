@@ -19,4 +19,13 @@ public class OrderForm {
     public Integer getUserId() {
         return userId;
     }
+
+    @Override
+    public String toString() {
+        return "OrderForm{" +
+                "bookId=" + bookId +
+                ", quantity=" + quantity +
+                ", userId=" + userId +
+                '}';
+    }
 }

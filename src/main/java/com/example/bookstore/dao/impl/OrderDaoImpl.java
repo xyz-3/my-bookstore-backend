@@ -4,6 +4,7 @@ import com.example.bookstore.dao.OrderDao;
 import com.example.bookstore.entity.*;
 import com.example.bookstore.repository.*;
 import com.example.bookstore.util.request.OrderForm;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,9 +39,10 @@ public class OrderDaoImpl implements OrderDao {
 
 
     @Override
+    @Transactional
     public Boolean purchaseBookDirectly(Long bookId, Integer userId, Integer quantity) {
         User user = userRepository.findById(userId);
-        Book book = bookRepository.getById(bookId);
+        Book book = bookRepository.findById(bookId).get();
         if(user == null || book == null) return false;
 
         if(book.getStock() < quantity) return false;
@@ -77,6 +79,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    @Transactional
     public void addCartOrder(Integer userId, List<Long> cartItemIds) {
         User user = userRepository.findById(userId);
         if(user == null) return;

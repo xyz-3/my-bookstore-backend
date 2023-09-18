@@ -5,14 +5,21 @@ import com.example.bookstore.entity.Order;
 import com.example.bookstore.entity.OrderItem;
 import com.example.bookstore.service.BookService;
 import com.example.bookstore.service.OrderService;
+import com.example.bookstore.util.msgutils.Msg;
+import com.example.bookstore.util.msgutils.MsgCode;
+import com.example.bookstore.util.msgutils.MsgUtil;
 import com.example.bookstore.util.request.OrderForm;
 import com.example.bookstore.util.response.OrderResponseForm;
 import org.jetbrains.annotations.NotNull;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class OrderController {
@@ -24,6 +31,9 @@ public class OrderController {
         this.orderService = orderService;
         this.bookService = bookService;
     }
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     //get all order
     @RequestMapping(value = "order/{id}", method = RequestMethod.GET)
@@ -46,10 +56,11 @@ public class OrderController {
     //purchase a book directly from book detail page
     @RequestMapping(value = "book/purchaseDirectly", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-    public Boolean purchaseBookDirectly(@RequestBody @NotNull OrderForm orderForm) {
-        Long bookId = orderForm.getBookId();
-        Integer userId = orderForm.getUserId();
-        Integer quantity = orderForm.getQuantity();
-        return orderService.purchaseBookDirectly(bookId, userId, quantity);
+    public Msg purchaseBookDirectly(@RequestBody @NotNull OrderForm orderForm) {
+        String order_uuid = UUID.randomUUID().toString().toUpperCase();
+        JSONObject data = new JSONObject();
+        data.put("uuid", order_uuid);
+        kafkaTemplate.send("directOrder", order_uuid, orderForm.toString());
+        return MsgUtil.makeMsg(MsgCode.SUCCESS, MsgUtil.SUCCESS_MSG, data);
     }
 }
