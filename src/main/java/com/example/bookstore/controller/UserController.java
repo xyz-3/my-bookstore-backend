@@ -22,7 +22,7 @@ public class UserController {
 
     //get user info
     @RequestMapping(value = "/user/{UserName}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public UserInfoForm getUserByAccount(@PathVariable("UserName") String UserName) {
         User user =  userService.getUserByUserName(UserName);
         if(user == null){
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/User/ChangeInfo/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public Msg ChangeInfo(@PathVariable("id") Integer id, @RequestBody @NotNull RegisterForm registerForm) {
         User user = userService.changeInfo(id, registerForm);
         if(user == null){

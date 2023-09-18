@@ -19,13 +19,13 @@ public class BookController {
     }
 
     @RequestMapping(value = "/api/book/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public Book getBookById(@PathVariable("id") Long id) {
         return bookService.getBookById(id);
     }
 
     @RequestMapping(value = "/api/books", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }

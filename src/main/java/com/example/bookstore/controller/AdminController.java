@@ -39,7 +39,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/api/storage", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<Book> getStorage(){
         List<Book> ret = bookService.getAllBooks();
         return bookService.getAllBooks();
@@ -47,25 +47,25 @@ public class AdminController {
 
 
     @RequestMapping(value = "/storage/add", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public Long addStorage(@RequestBody @NotNull BookStorageForm bookStorageForm){
         return bookService.addBook(bookStorageForm);
     }
 
     @RequestMapping(value = "/api/storage/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public boolean changeBookStorageInfo(@PathVariable("id") Long id, @RequestBody @NotNull BookStorageForm bookStorageForm){
         return bookService.setBookInfo(id, bookStorageForm);
     }
 
     @RequestMapping(value = "/storage/delete/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<Book> deleteBook(@PathVariable("id") Long id){
         return bookService.deleteBook(id);
     }
 
     @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<OrderResponseForm> getOrders(){
         List<Order> allOrders = orderService.getAllOrders();
         List<OrderResponseForm> allOrderForms = new ArrayList<>();
@@ -82,7 +82,7 @@ public class AdminController {
 
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<UserInfoForm> getUsers(){
         List<User> users = userService.getAllUsers();
         List<UserInfoForm> userInfoForms = new ArrayList<>();
@@ -94,7 +94,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/user/setStatus/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<User> setUserStatus(@PathVariable("id") Long id, @RequestBody @NotNull boolean status){
         return userService.setUserStatus(id, status);
     }

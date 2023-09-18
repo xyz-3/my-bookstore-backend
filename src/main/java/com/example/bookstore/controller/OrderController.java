@@ -27,7 +27,7 @@ public class OrderController {
 
     //get all order
     @RequestMapping(value = "order/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<OrderResponseForm> getOrders(@PathVariable("id") Integer id) {
         List<Order> orders = orderService.getOrders(id);
         List<OrderResponseForm> orderForms = new ArrayList<>();
@@ -45,7 +45,7 @@ public class OrderController {
 
     //purchase a book directly from book detail page
     @RequestMapping(value = "book/purchaseDirectly", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public Boolean purchaseBookDirectly(@RequestBody @NotNull OrderForm orderForm) {
         Long bookId = orderForm.getBookId();
         Integer userId = orderForm.getUserId();

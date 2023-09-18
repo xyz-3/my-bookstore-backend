@@ -28,7 +28,7 @@ public class CartController {
 
 
     @RequestMapping(value = "/book/addtocart", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public Boolean addBookToCart(@RequestBody @NotNull CartAddForm cartAddForm) {
         Long bookId = cartAddForm.getBook_id();
         Integer userId = cartAddForm.getAdder_id();
@@ -37,7 +37,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/api/cart/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<CartItemForm> getCartItems(@PathVariable("id") Integer id) {
         List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
         List<CartItem> cartItems = cartService.getCartItems(id);
@@ -57,7 +57,7 @@ public class CartController {
 
 
     @RequestMapping(value = "api/cart/delete/{user_id}/{cart_id}", method = RequestMethod.DELETE)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<CartItemForm> deleteCartItem(@PathVariable("user_id") Integer userId, @PathVariable("cart_id") Long cartId) {
         List<CartItem> cartItems = cartService.deleteCartItem(userId, cartId);
         List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
@@ -76,7 +76,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "api/cart/update/{user_id}/{cart_id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<CartItemForm> updateCartItem(@PathVariable("user_id") Integer userId, @PathVariable("cart_id") Long cartId, @RequestBody @NotNull Long number){
         List<CartItem> cartItems = cartService.updateCartItem(userId, cartId, number);
         List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
@@ -95,7 +95,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "api/cart/purchase/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public List<CartItemForm> cartPurchase(@PathVariable("id") Integer userId, @RequestBody List<Long> cartItemIds){
         //add cart items to order table
         orderService.addCartOrder(userId, cartItemIds);
