@@ -1,6 +1,7 @@
 package com.example.bookstore.util.listener;
 
 import com.example.bookstore.service.OrderService;
+import com.example.bookstore.util.websocket.WebSocketServer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -20,6 +21,8 @@ public class OrderListener {
     private OrderService orderService;
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     @KafkaListener(topics = {"directOrder"})
     public void DirectOrderListener(ConsumerRecord<String, String> record) throws Exception {
@@ -50,7 +53,7 @@ public class OrderListener {
         userId = Integer.parseInt(values[2]);
         quantity = Integer.parseInt(values[1]);
         orderService.purchaseBookDirectly(bookId, userId, quantity);
-        kafkaTemplate.send("orderDone", record.key());
+        kafkaTemplate.send("orderDone", record.key(), "Order Done");
     }
 
     @KafkaListener(topics = {"cartOrder"})
@@ -83,7 +86,7 @@ public class OrderListener {
         }
 
         orderService.addCartOrder(userId, cartItemids);
-        kafkaTemplate.send("orderDone", record.key());
+        kafkaTemplate.send("orderDone", record.key(), "Order Done");
     }
 
     @KafkaListener(topics = {"orderDone"})
@@ -92,7 +95,8 @@ public class OrderListener {
             return;
         }
         String value = record.value();
-        System.out.println("处理订单完成消息：" + value);
-        //TODO websocket 通知用户
+        String key = record.key();
+        System.out.println("处理订单完成消息：" + key);
+        webSocketServer.sendMessageToUser(key, value);
     }
 }
