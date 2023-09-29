@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.example.bookstore.entity.User;
 
 import com.example.bookstore.constant.Constant;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,6 +60,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public User getUserById(Long id){
         return userRepository.findById(id).get();
     }

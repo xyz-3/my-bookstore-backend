@@ -109,14 +109,6 @@ public class CartController {
         msgData.put("userId", userId);
         msgData.put("cartItemIds", cartItemIds);
         kafkaTemplate.send("cartOrder", order_uuid, msgData.toString());
-        //delete cart items in cart table
-        List<CartItem> cartItems = cartService.deleteCartItem(userId, cartItemIds);
-        List<CartItemForm> cartItemForms = new java.util.ArrayList<>();
-        for(CartItem cartItem : cartItems){
-            CartItemForm cartItemForm = new CartItemForm(cartItem);
-            cartItemForms.add(cartItemForm);
-        }
-        data.put("cartItems", cartItemForms);
         return MsgUtil.makeMsg(MsgCode.SUCCESS, MsgUtil.SUCCESS_MSG, data);
     }
 

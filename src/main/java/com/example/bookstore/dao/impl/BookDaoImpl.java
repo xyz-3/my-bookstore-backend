@@ -12,6 +12,9 @@ import com.example.bookstore.repository.OrderRepository;
 import com.example.bookstore.util.request.BookStorageForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,5 +108,16 @@ public class BookDaoImpl implements BookDao {
         }
         bookRepository.save(book);
         return book.getId();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
+    public Book updateStock(Long bookId, Integer quantity){
+        Book book = bookRepository.getById(bookId);
+        if(book == null) return null;
+        if(book.getStock() < quantity) return null;
+        book.setStock(book.getStock() - quantity);
+        bookRepository.save(book);
+        return book;
     }
 }

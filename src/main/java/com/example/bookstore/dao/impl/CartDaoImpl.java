@@ -9,6 +9,9 @@ import com.example.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.example.bookstore.repository.CartRepository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +86,7 @@ public class CartDaoImpl implements CartDao{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     public List<CartItem> deleteCartItem(Integer userId, List<Long> cartIds) {
         User user = userRepository.findById(userId);
         if(user == null){

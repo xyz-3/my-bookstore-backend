@@ -18,4 +18,6 @@ public interface BookDao {
     List<Book> deleteById(Long id);
 
     Long addBook(BookStorageForm bookStorageForm);
+
+    Book updateStock(Long bookId, Integer quantity);
 }

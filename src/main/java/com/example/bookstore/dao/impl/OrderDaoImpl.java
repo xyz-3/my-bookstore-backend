@@ -3,10 +3,11 @@ package com.example.bookstore.dao.impl;
 import com.example.bookstore.dao.OrderDao;
 import com.example.bookstore.entity.*;
 import com.example.bookstore.repository.*;
-import com.example.bookstore.util.request.OrderForm;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -14,23 +15,13 @@ import java.util.List;
 @Repository
 public class OrderDaoImpl implements OrderDao {
     @Autowired
-    private final OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private final BookRepository bookRepository;
+    private BookRepository bookRepository;
     @Autowired
-    private final OrderRepository orderRepository;
-    @Autowired
-    private final CartRepository cartRepository;
-
-    public OrderDaoImpl(OrderItemRepository orderItemRepository, UserRepository userRepository, BookRepository bookRepository, OrderRepository orderRepository, CartRepository cartRepository) {
-        this.orderItemRepository = orderItemRepository;
-        this.userRepository = userRepository;
-        this.bookRepository = bookRepository;
-        this.orderRepository = orderRepository;
-        this.cartRepository = cartRepository;
-    }
+    private OrderRepository orderRepository;
 
     @Override
     public List<OrderItem> findAll() {
@@ -39,16 +30,9 @@ public class OrderDaoImpl implements OrderDao {
 
 
     @Override
-    @Transactional
-    public Boolean purchaseBookDirectly(Long bookId, Integer userId, Integer quantity) {
-        User user = userRepository.findById(userId);
-        Book book = bookRepository.findById(bookId).get();
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
+    public Boolean purchaseBookDirectly(Book book, User user, Integer quantity) {
         if(user == null || book == null) return false;
-
-        if(book.getStock() < quantity) return false;
-
-        book.setStock(book.getStock() - quantity);
-        bookRepository.save(book);
 
         Order order = new Order();
         order.setUser(user);
@@ -79,30 +63,15 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    @Transactional
-    public void addCartOrder(Integer userId, List<Long> cartItemIds) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
+    public Order addCartOrder(Integer userId, List<Long> cartItemIds) {
         User user = userRepository.findById(userId);
-        if(user == null) return;
+        if(user == null) return null;
         Order order = new Order();
         order.setUser(user);
         order.setTime(new Date());
         orderRepository.save(order);
-        for(Long cartItemId : cartItemIds) {
-            OrderItem orderItem = new OrderItem();
-            CartItem cartItem = cartRepository.getCartItemById(cartItemId);
-
-            Book book = cartItem.getBook();
-            if(book == null) return;
-            if(book.getStock() < cartItem.getNumber()) return;
-            book.setStock(book.getStock() - cartItem.getNumber());
-            bookRepository.save(book);
-
-            orderItem.setBook(book);
-            orderItem.setQuantity(Math.toIntExact(cartItem.getNumber()));
-            orderItem.setPrice(cartItem.getBook().getPrice() * cartItem.getNumber());
-            orderItem.setOrder(order);
-            orderItemRepository.save(orderItem);
-        }
+        return order;
     }
 
     @Override
