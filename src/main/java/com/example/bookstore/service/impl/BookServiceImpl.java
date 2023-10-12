@@ -4,11 +4,9 @@ import com.example.bookstore.dao.BookDao;
 import com.example.bookstore.entity.Book;
 import com.example.bookstore.service.BookService;
 import com.example.bookstore.util.request.BookStorageForm;
-import com.example.bookstore.util.response.BookForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +20,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookById(Long id) {
-        return bookDao.findBookById(id).orElseThrow();
+        return bookDao.findBookById(id);
     }
 
     @Override

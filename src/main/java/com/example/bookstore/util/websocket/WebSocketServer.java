@@ -3,7 +3,6 @@ package com.example.bookstore.util.websocket;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
