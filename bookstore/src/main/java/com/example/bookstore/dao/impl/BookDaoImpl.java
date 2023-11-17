@@ -2,14 +2,8 @@ package com.example.bookstore.dao.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.example.bookstore.dao.BookDao;
-import com.example.bookstore.entity.Book;
-import com.example.bookstore.entity.CartItem;
-import com.example.bookstore.entity.Order;
-import com.example.bookstore.entity.OrderItem;
-import com.example.bookstore.repository.BookRepository;
-import com.example.bookstore.repository.CartRepository;
-import com.example.bookstore.repository.OrderItemRepository;
-import com.example.bookstore.repository.OrderRepository;
+import com.example.bookstore.entity.*;
+import com.example.bookstore.repository.*;
 import com.example.bookstore.util.Redis.RedisUtil;
 import com.example.bookstore.util.request.BookStorageForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +20,8 @@ public class BookDaoImpl implements BookDao {
 
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private BookDescriptionRepository bookDescriptionRepository;
     @Autowired
     private CartRepository cartRepository;
     @Autowired
@@ -44,6 +40,12 @@ public class BookDaoImpl implements BookDao {
             System.out.println("get book from redis");
         }else{
             book = bookRepository.findById(id).get();
+            // get book description from mongoDB
+            BookDescription bookDescription = bookDescriptionRepository.findBookDescriptionByBookId(id);
+            if (bookDescription != null){
+                book.setIntroduction(bookDescription.getDescription());
+                System.out.println("get book description from mongoDB");
+            }
             redisUtil.set("book_" + id, JSONArray.toJSONString(book));
             System.out.println("get book from database");
         }
@@ -52,12 +54,31 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Optional<Book> findBookByTitle(String title) {
-        return bookRepository.findByTitle(title);
+        Book book = bookRepository.findByTitle(title).get();
+        if (book == null) return Optional.empty();
+        Long bookId = book.getId();
+        // get book description from mongoDB
+        BookDescription bookDescription = bookDescriptionRepository.findBookDescriptionByBookId(bookId);
+        if (bookDescription != null){
+            System.out.println("get book description from mongoDB");
+            book.setIntroduction(bookDescription.getDescription());
+        }
+        return Optional.of(book);
     }
 
     @Override
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        List<Book> books = bookRepository.findAll();
+        for (Book book : books){
+            Long bookId = book.getId();
+            // get book description from mongoDB
+            BookDescription bookDescription = bookDescriptionRepository.findBookDescriptionByBookId(bookId);
+            if (bookDescription != null){
+                System.out.println("get book description from mongoDB");
+                book.setIntroduction(bookDescription.getDescription());
+            }
+        }
+        return books;
     }
 
     @Override
@@ -76,9 +97,17 @@ public class BookDaoImpl implements BookDao {
         book.setImage(bookStorageForm.getImage());
         book.setPublisher(bookStorageForm.getPublisher());
         book.setStock(bookStorageForm.getStock());
-        book.setIntroduction(bookStorageForm.getIntroduction());
+//        book.setIntroduction(bookStorageForm.getIntroduction());
         book.setIsbn(bookStorageForm.getIsbn());
         bookRepository.save(book);
+        // update book description in mongoDB
+        BookDescription bookDescription = bookDescriptionRepository.findBookDescriptionByBookId(id);
+        if (bookDescription == null){
+            bookDescription = new BookDescription();
+            bookDescription.setBookId(id);
+        }
+        bookDescription.setDescription(bookStorageForm.getIntroduction());
+        bookDescriptionRepository.save(bookDescription);
         redisUtil.set("book_" + id, JSONArray.toJSONString(book));
         return true;
     }
@@ -108,7 +137,8 @@ public class BookDaoImpl implements BookDao {
             orderRepository.save(order);
         }
         bookRepository.delete(book);
-        return bookRepository.findAll();
+//        return bookRepository.findAll();
+        return findAll();
     }
 
     @Override
@@ -123,7 +153,7 @@ public class BookDaoImpl implements BookDao {
         book.setTitle(bookStorageForm.getTitle());
         book.setAuthor(bookStorageForm.getAuthor());
         book.setPrice(bookStorageForm.getPrice());
-        book.setIntroduction(bookStorageForm.getIntroduction());
+//        book.setIntroduction(bookStorageForm.getIntroduction());
         book.setPublisher(bookStorageForm.getPublisher());
         book.setStock(bookStorageForm.getStock());
         book.setIsbn(bookStorageForm.getIsbn());
@@ -133,6 +163,10 @@ public class BookDaoImpl implements BookDao {
             book.setImage(bookStorageForm.getImage());
         }
         bookRepository.save(book);
+        book.setIntroduction(bookStorageForm.getIntroduction());
+        //save book description to mongoDB
+        bookDescriptionRepository.save(new BookDescription(book.getId(), bookStorageForm.getIntroduction()));
+        System.out.println("save book description to mongoDB");
         redisUtil.set("book_" + book.getId(), JSONArray.toJSONString(book));
         return book.getId();
     }
