@@ -41,6 +41,9 @@ public class Book {
     @Column(name = "stock", nullable = false)
     private Long stock;
 
+    @Column(name = "tag", nullable = false)
+    private String tag;
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = {"book"})
     private List<CartItem> cartItemSet;
@@ -50,13 +53,14 @@ public class Book {
     private List<OrderItem> orderItemSet;
 
 
-    public Book(String title, String author, String introduction, String image, Double price, String publisher) {
+    public Book(String title, String author, String introduction, String image, Double price, String publisher, String tag) {
         this.title = title;
         this.author = author;
         this.introduction = introduction;
         this.image = image;
         this.price = price;
         this.publisher = publisher;
+        this.tag = tag;
     }
 
     public Book() {

@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -23,13 +22,51 @@ public class BookDaoImpl implements BookDao {
     @Autowired
     private BookDescriptionRepository bookDescriptionRepository;
     @Autowired
-    private CartRepository cartRepository;
+    private BookTagRepository bookTagRepository;
     @Autowired
-    private OrderItemRepository orderItemRepository;
+    private CartRepository cartRepository;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private RedisUtil redisUtil;
+
+
+    @Override
+    public List<Book> searchBooksByTag(String tag) {
+        Set<Long> bookIds = new HashSet<>();
+        List<BookTag> bookTags1 = bookTagRepository.findBookTagsByTag(tag);
+        List<BookTag> bookTags2 = new ArrayList<>();
+        List<BookTag> bookTags3 = new ArrayList<>();
+        for (BookTag bookTag : bookTags1) {
+            Set<BookTag> relatedTags = bookTag.getRelatedTags();
+            bookTags2.addAll(relatedTags);
+        }
+        for (BookTag bookTag : bookTags2) {
+            Set<BookTag> relatedTags = bookTag.getRelatedTags();
+            bookTags3.addAll(relatedTags);
+        }
+
+
+        List<Book> books = new ArrayList<>();
+
+        for(BookTag bookTag : bookTags1){
+            bookIds.addAll(bookTag.getBookIds());
+        }
+        for(BookTag bookTag : bookTags2){
+            bookIds.addAll(bookTag.getBookIds());
+        }
+        for(BookTag bookTag : bookTags3){
+            bookIds.addAll(bookTag.getBookIds());
+        }
+        for(Long bookId : bookIds){
+            Book book = findBookById(bookId);
+//            System.out.println(book.getTag());
+            books.add(book);
+        }
+
+        return books;
+    }
+
 
     @Override
     public Book findBookById(Long id) {

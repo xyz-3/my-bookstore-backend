@@ -20,4 +20,6 @@ public interface BookDao {
     Long addBook(BookStorageForm bookStorageForm);
 
     Book updateStock(Long bookId, Integer quantity);
+
+    List<Book> searchBooksByTag(String tag);
 }

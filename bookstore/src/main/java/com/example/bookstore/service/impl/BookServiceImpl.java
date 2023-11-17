@@ -50,4 +50,9 @@ public class BookServiceImpl implements BookService {
     public Long addBook(BookStorageForm bookStorageForm) {
         return bookDao.addBook(bookStorageForm);
     }
+
+    @Override
+    public List<Book> searchBooksByTag(String tag) {
+        return bookDao.searchBooksByTag(tag);
+    }
 }
