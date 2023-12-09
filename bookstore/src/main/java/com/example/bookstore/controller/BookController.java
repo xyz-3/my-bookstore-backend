@@ -6,8 +6,11 @@ import com.example.bookstore.repository.BookTagRepository;
 import com.example.bookstore.service.BookService;
 import com.example.bookstore.util.msgutils.Msg;
 import com.example.bookstore.util.response.BookForm;
+import com.example.bookstore.util.response.GraphBook;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -86,5 +89,14 @@ public class BookController {
         bookTagRepository.save(booktag6);
 
         return null;
+    }
+
+    @QueryMapping
+    public GraphBook bookByTitle(@Argument String title) {
+        Book book = bookService.getBookByTitle(title);
+        if (book == null) {
+            return null;
+        }
+        return new GraphBook(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice());
     }
 }

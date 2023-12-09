@@ -1,0 +1,10 @@
+type Query {
+    bookByTitle(title: String): GraphBook
+}
+
+type GraphBook {
+    id: ID
+    title: String
+    price: Float
+    author: String
+}
